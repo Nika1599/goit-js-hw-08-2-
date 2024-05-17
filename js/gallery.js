@@ -75,9 +75,8 @@ function selectImage(event) {
       `<img src="${largeImage}" alt="Large image">`
     );
     modal.show();
+    console.log("Посилання на велике зображення:", largeImage);
   }
-
-  console.log("Посилання на велике зображення:", largeImage);
 }
 
 images.forEach((image) => {
