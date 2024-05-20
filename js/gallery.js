@@ -69,6 +69,10 @@ const gallery = document.querySelector(".gallery");
 gallery.addEventListener("click", selectImage);
 
 function selectImage(event) {
+  if (event.target.parentElement.nodeName === "A") {
+    event.preventDefault();
+  }
+
   if (event.target.nodeName === "IMG") {
     const largeImage = event.target.dataset.source;
     const modal = basicLightbox.create(
@@ -79,24 +83,15 @@ function selectImage(event) {
   }
 }
 
-images.forEach((image) => {
-  const item = document.createElement("li");
-  item.classList.add("gallery-item");
+const galleryItems = images
+  .map((image) => {
+    return `
+      <li class="gallery-item">
+        <a class="gallery-link" href="${image.original}">
+          <img class="gallery-image" src="${image.preview}" alt="${image.description}" data-source="${image.original}">
+        </a>
+      </li>`;
+  })
+  .join("");
 
-  const link = document.createElement("a");
-  link.classList.add("gallery-link");
-  link.href = image.original;
-  link.addEventListener("click", (event) => {
-    event.preventDefault();
-  });
-
-  const galleryimage = document.createElement("img");
-  galleryimage.classList.add("gallery-image");
-  galleryimage.src = image.preview;
-  galleryimage.alt = image.description;
-  galleryimage.dataset.source = image.original;
-
-  link.appendChild(galleryimage);
-  item.appendChild(link);
-  gallery.appendChild(item);
-});
+gallery.innerHTML = galleryItems;
